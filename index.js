@@ -1,17 +1,20 @@
+'use client';
+import { useEffect, useState } from 'react';
 
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
+export default function Home() {
+  const [status, setStatus] = useState('Loading...');
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+  useEffect(() => {
+    fetch('https://YOUR-BACKEND-URL.com/')  // Replace with your backend API URL
+      .then(res => res.json())
+      .then(data => setStatus(data.status))
+      .catch(() => setStatus('Error connecting to API'));
+  }, []);
 
-app.get('/', (req, res) => {
-  res.json({ status: 'GasTech API running' });
-});
-
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  return (
+    <main style={{ padding: 40 }}>
+      <h1>Gas Tech Match</h1>
+      <p>{status}</p>
+    </main>
+  );
+}
